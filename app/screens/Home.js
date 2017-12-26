@@ -9,8 +9,12 @@ import MaleAvatar from '../assets/male.png';
 import FemaleAvatar from '../assets/female.jpg';
 
 
+
 // create a component
 class Home extends Component {
+  static navigationOptions = {
+    header: null
+  };
 
     render() {
         return (
@@ -53,6 +57,7 @@ const styles = RkStyleSheet.create(theme => ({
         paddingBottom: 17
     }
 }));
+
 
 //make this component available to the app
 export default Home;
