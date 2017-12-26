@@ -17,7 +17,8 @@ export const FooterTab = TabNavigator(
     Home: {
       screen: Home,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name="home" />
+        tabBarIcon: ({ tintColor }) => <Icon name="home" />,
+        header: null
       }
     },
     Stories: {
@@ -51,16 +52,21 @@ export const FooterTab = TabNavigator(
   }
 );
 
-export const Drawer = StackNavigator(
+export const Drawer = DrawerNavigator(
   {
     Home: {
       screen: FooterTab
     },
-    CreateStory: {
-      screen: CreateStory
-    }
-  },
-  {
-    headerMode: "screen"
   }
 );
+
+export const Root = StackNavigator(
+  {
+    Drawer: {
+      screen: Drawer
+    },
+    CreateStory: {
+      screen: CreateStory                                                                                                                                                                                                                 
+    }
+  },
+)

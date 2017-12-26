@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, UIManager, StatusBar } from 'react-native';
-import { Drawer } from "./app/config/routes";
+import { Root } from "./app/config/routes";
 import { Spinner, Container } from "native-base";
 import { Expo, Font, AppLoading } from 'expo'
 const Roboto_font = require('native-base/Fonts/Roboto.ttf');
@@ -40,8 +40,8 @@ export default class App extends React.Component {
 
     return (
       <Container>
-        <StatusBar hidden />
-        <Drawer />
+        {/* <StatusBar hidden /> */}
+        <Root />
       </Container>
     );
   }
