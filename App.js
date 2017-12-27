@@ -3,8 +3,6 @@ import { StyleSheet, Text, View, UIManager, StatusBar } from 'react-native';
 import { Root } from "./app/config/routes";
 import { Spinner, Container } from "native-base";
 import { Expo, Font, AppLoading } from 'expo'
-const Roboto_font = require('native-base/Fonts/Roboto.ttf');
-const Roboto_medium_font = require('native-base/Fonts/Roboto_medium.ttf');
 import { RkTheme } from "react-native-ui-kitten";
 import { AvatarTypes } from "./app/components/avatar/types";
 
@@ -28,7 +26,13 @@ export default class App extends React.Component {
     await Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-      Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
+      Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf"),
+      Anton: require("./app/assets/fonts/Anton-Regular.ttf"),
+      GochiHand: require("./app/assets/fonts/GochiHand-Regular.ttf"),
+      IndieFlower: require("./app/assets/fonts/IndieFlower.ttf"),
+      Lobster: require("./app/assets/fonts/Lobster-Regular.ttf"),
+      Pacifico: require("./app/assets/fonts/Pacifico-Regular.ttf"),
+      Satisfy: require("./app/assets/fonts/Satisfy-Regular.ttf"),
     });
     this.setState({ ready: true });
   }

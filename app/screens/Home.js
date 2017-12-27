@@ -8,6 +8,8 @@ import { RkStyleSheet } from "react-native-ui-kitten";
 import MaleAvatar from '../assets/male.png';
 import FemaleAvatar from '../assets/female.jpg';
 import Cover from "../assets/cover.jpg";
+import { LinearGradient } from "expo";
+
 // create a component
 class Home extends Component {
     render() {
@@ -15,32 +17,34 @@ class Home extends Component {
             <Container>
                 <Content>
                     <ImageBackground source={Cover} style={styles.header} >
-                        <Grid>
-                            <Row size={60}>
+                        <LinearGradient colors={['transparent', 'rgba(0,0,0,0.8)']}
+                            style={styles.linearGradient}>
+                            <Grid>
+                                <Row size={60}>
 
-                            </Row>
-                            <Row size={40}>
-                                <Col size={41} style={styles.avatar}>
-                                    <Avatar img={MaleAvatar} rkType='big' />
-                                    <H2>Anthony</H2>
-                                </Col>
+                                </Row>
+                                <Row size={40}>
+                                    <Col size={41} style={styles.avatar}>
+                                        <Avatar img={MaleAvatar} rkType='big' />
+                                        <Text style={styles.name}>Anthony</Text>
+                                    </Col>
 
-                                <Col style={styles.centered} size={20}>
-                                    <Icon style={styles.heart} name='heart' />
-                                    <H3 style={{ position: 'absolute', top: '41%' }}>789</H3>
-                                </Col>
+                                    <Col style={styles.centered} size={20}>
+                                        <Icon style={styles.heart} name='heart' />
+                                        <Text style={styles.dayCounter}>789</Text>
+                                    </Col>
 
-                                <Col size={41} style={styles.avatar}>
-                                    <Avatar img={FemaleAvatar} rkType='big' />
-                                    <H2>Monica</H2>
-                                </Col>
-                            </Row>
-                            <Row size={10} style={styles.centered}>
-                                <H2>..loving since 2015</H2>
-                            </Row>
-                        </Grid>
+                                    <Col size={41} style={styles.avatar}>
+                                        <Avatar img={FemaleAvatar} rkType='big' />
+                                        <Text style={styles.name}>Monica</Text>
+                                    </Col>
+                                </Row>
+                                <Row size={10} style={styles.centered}>
+                                    <H1 style={styles.description}>..loving since 2015</H1>
+                                </Row>
+                            </Grid>
+                        </LinearGradient>
                     </ImageBackground>
-
                     <Card />
                     <Card />
                     <Card />
@@ -76,6 +80,29 @@ const styles = RkStyleSheet.create(theme => ({
         backgroundColor: 'transparent',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    name: {
+        fontFamily: "Satisfy",
+        color: 'white',
+        fontSize: 30
+    },
+    linearGradient: {
+        position: 'absolute',
+        bottom: 0,
+        top: 0,
+        right: 0,
+        left: 0,
+    },
+    dayCounter: {
+        fontFamily: 'IndieFlower',
+        fontSize: 35,
+        color: 'white',
+        position: 'absolute',
+        top: '35%'
+    },
+    description: {
+        fontFamily: 'GochiHand',
+        color: '#ff77b0'
     }
 }));
 
