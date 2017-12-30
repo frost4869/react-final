@@ -11,10 +11,11 @@ import Stories from "../screens/Stories";
 import Photos from "../screens/Photos";
 import Events from "../screens/Events";
 import CreateStory from "../screens/CreateStory";
+import Details from "../screens/Details";
 
 export const FooterTab = TabNavigator(
   {
-    Home: {
+    HomeScreen: {
       screen: Home,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon name="home" />,
@@ -52,21 +53,27 @@ export const FooterTab = TabNavigator(
   }
 );
 
-export const Drawer = DrawerNavigator(
+
+
+export const StackScreens = StackNavigator(
   {
-    Home: {
+    BottomNav: {
       screen: FooterTab
     },
-  }
-);
-
-export const Root = StackNavigator(
-  {
-    Drawer: {
-      screen: Drawer
-    },
     CreateStory: {
-      screen: CreateStory                                                                                                                                                                                                                 
+      screen: CreateStory
+    },
+    Details: {
+      screen: Details
     }
   },
 )
+
+export const Drawer = DrawerNavigator(
+  {
+    Home: {
+      screen: StackScreens,
+      path: '/'
+    },
+  }, 
+);

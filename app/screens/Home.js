@@ -22,6 +22,7 @@ class Home extends Component {
                 timestamp: Moment().format('MMM, DD [at] hh:ss a'),
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.',
                 type: 'image',
+                imageUrl: 'https://cdn-media-1.lifehack.org/wp-content/files/2015/07/Couples-Read-Together-Stay-Together.jpg',
                 username: 'Anthony',
                 icon: (<Icon name='heart' />)
             },
@@ -29,7 +30,7 @@ class Home extends Component {
                 time: new Date().getFullYear(),
                 timestamp: Moment().format('MMM, DD [at] hh:ss a'),
                 title: 'Just some story',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
                 type: 'story',
                 username: 'Monica'
             },
@@ -46,6 +47,7 @@ class Home extends Component {
                 timestamp: Moment().format('MMM, DD [at] hh:ss a'),
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                 type: 'image',
+                imageUrl: 'https://i.pinimg.com/736x/fd/63/f9/fd63f9f0b416430cc6d587b51052bd6f--love-photos-couple-couples-love.jpg',
                 username: 'Anthony'
             },
             {
@@ -64,7 +66,43 @@ class Home extends Component {
                 type: 'event'
             }
         ]
+        this.state = {
+            data: [],
+            isRefreshing: false,
+            loading: true,
+        }
 
+        this.refresh = this.refresh.bind(this);
+        this.loadmore = this.loadmore.bind(this);
+    }
+
+    componentWillMount() {
+        this.setState({
+            data: this.data,
+            loading: false
+        })
+    }
+
+    refresh() {
+        this.setState({
+            isRefreshing: true
+        }, () => {
+            this.setState({
+                data: this.data,
+                isRefreshing: false
+            })
+        })
+    }
+
+    loadmore() {
+        console.log('loadmore')
+        this.setState({
+            loading: true,
+        }, () => {
+            this.setState({
+                data: this.state.data.concat(this.data)
+            })
+        })
     }
 
     render() {
@@ -101,10 +139,15 @@ class Home extends Component {
                     </ImageBackground>
 
                     <Body>
-                        <Text style={styles.description}>Our sweet moments</Text>
+                        <Text style={styles.description}>Our sweet memories</Text>
                     </Body>
 
-                    <TimeLine data={this.data}/>
+                    <TimeLine data={this.state.data}
+                        loadmore={this.loadmore}
+                        refresh={this.refresh}
+                        isRefreshing={this.state.isRefreshing}
+                        loading={this.state.loading}
+                        navigate={this.props.navigation.navigate}/>
 
                 </Content>
             </Container>

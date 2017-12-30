@@ -1,14 +1,15 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 import {
     Card, CardItem, Thumbnail, Text, Button,
     Icon, Left, Right, Body
 } from "native-base";
-
+import ReadMore from "react-native-read-more-text";
 import Male from '../assets/male.png'
 import Female from '../assets/female.jpg'
 
+import ImageView from "../components/image-view";
 
 // create a component
 class TimeLineCard extends Component {
@@ -16,13 +17,26 @@ class TimeLineCard extends Component {
     constructor(props) {
         super(props);
 
-        this.caption = this.props.caption;
-        this.des = this.props.des;
-        this.type = this.props.type;
-        this.timestamp = this.props.timestamp;
+        this.caption = this.props.data.title;
+        this.des = this.props.data.description;
+        this.type = this.props.data.type;
+        this.timestamp = this.props.data.timestamp;
 
-        this.username = this.props.username;
-        this.image = this.props.image;
+        this.username = this.props.data.username;
+        this.image = this.props.data.imageUrl;
+
+        this.state = {
+            isVisible: false
+        }
+
+        this.viewImage = this.viewImage.bind(this);
+        this.viewDetails = this.viewDetails.bind(this);
+    }
+
+    viewImage() {
+        this.setState({
+            isVisible: !this.state.isVisible
+        })
     }
 
     CardHeader(props) {
@@ -55,29 +69,52 @@ class TimeLineCard extends Component {
         switch (this.type) {
             case 'story':
                 return (
-                    <Body>
-                        <Text style={styles.caption}>{this.caption}</Text>
-                        <Text>{this.des}</Text>
-                    </Body>
+                    <View>
+                        <Text style={styles.caption} >{this.caption}</Text>
+                        <ReadMore
+                            numberOfLines={4}>
+                            <Text>{this.des} </Text>
+                        </ReadMore>
+                    </View>
                 )
             case 'image':
                 return (
-                    <Body>
-                        <Text style={styles.caption}>{this.des}</Text>
-                        <Image source={require('../assets/female.jpg')}
-                            style={styles.image} />
-                    </Body>
+                    <View>
+                        <ReadMore
+                            numberOfLines={4}>
+                            <Text>{this.des} </Text>
+                        </ReadMore>
+                        <TouchableOpacity
+                            key={this.image}
+                            onPress={this.viewImage}
+                            activeOpacity={0.8}>
+                            <Image source={{ uri: this.image }} style={styles.image}
+                                resizeMode='cover' />
+                        </TouchableOpacity>
+                    </View>
 
                 )
-            default:
-                console.log(this.image)
+            default: //events
                 return (
-                    <Body>
+                    <View>
                         <Text style={styles.caption}>{this.des}</Text>
-                        <Image source={{ uri: this.image, width: "100%", height: 300 }}/>
-                    </Body>
+                        <TouchableOpacity
+                            key={this.image}
+                            onPress={this.viewImage}
+                            activeOpacity={0.8}>
+                            <Image source={{ uri: this.image }} style={styles.image}
+                                resizeMode='cover' />
+                        </TouchableOpacity>
+                    </View>
                 );
         }
+    }
+
+    viewDetails(){
+        this.setState({
+            isVisible: false
+        });
+        this.props.navigate("Details", this.props.data);
     }
 
     render() {
@@ -93,18 +130,20 @@ class TimeLineCard extends Component {
 
                 <CardItem >
                     <Left>
-                        <Button transparent >
-                            <Icon active name="heart" style={styles.icon} />
-                            <Text>Love</Text>
-                        </Button>
                     </Left>
                     <Right>
                         <Button transparent >
                             <Icon active name="chatbubbles" style={styles.icon} />
-                            <Text>Comments</Text>
+                            <Text onPress={this.viewDetails }>Comments</Text>
                         </Button>
                     </Right>
                 </CardItem>
+
+                <ImageView 
+                    data={this.props.data}
+                    isVisible={this.state.isVisible}
+                    viewImage={this.viewImage} 
+                    viewDetails={this.viewDetails}/>
             </Card>
         );
     }
@@ -114,10 +153,11 @@ class TimeLineCard extends Component {
 const styles = StyleSheet.create({
     card: {
         marginTop: 5,
-        marginRight: 5
+        marginRight: 5,
     },
     image: {
         width: '100%',
+        height: 300,
     },
     title: {
         fontWeight: 'bold'

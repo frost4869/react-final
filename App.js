@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, UIManager, StatusBar } from 'react-native';
-import { Root } from "./app/config/routes";
+import { Drawer } from "./app/config/routes";
 import { Spinner, Container } from "native-base";
 import { Expo, Font, AppLoading } from 'expo'
 import { RkTheme } from "react-native-ui-kitten";
@@ -46,7 +46,7 @@ export default class App extends React.Component {
     return (
       <Container>
         {/* <StatusBar hidden /> */}
-        <Root />
+        <Drawer />
       </Container>
     );
   }
