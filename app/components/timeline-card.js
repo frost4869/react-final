@@ -73,7 +73,7 @@ class TimeLineCard extends Component {
                         <Text style={styles.caption} >{this.caption}</Text>
                         <ReadMore
                             numberOfLines={4}>
-                            <Text>{this.des} </Text>
+                            <Text>{this.des}</Text>
                         </ReadMore>
                     </View>
                 )
@@ -82,7 +82,7 @@ class TimeLineCard extends Component {
                     <View>
                         <ReadMore
                             numberOfLines={4}>
-                            <Text>{this.des} </Text>
+                            <Text>{this.des}</Text>
                         </ReadMore>
                         <TouchableOpacity
                             key={this.image}
@@ -110,7 +110,18 @@ class TimeLineCard extends Component {
         }
     }
 
-    viewDetails(){
+    cardComment() {
+        if (this.props.withComment) {
+            return (
+                <Button transparent >
+                    <Icon active name="chatbubbles" style={styles.icon} />
+                    <Text onPress={this.viewDetails}>Comments</Text>
+                </Button>
+            )
+        }
+    }
+
+    viewDetails() {
         this.setState({
             isVisible: false
         });
@@ -132,18 +143,16 @@ class TimeLineCard extends Component {
                     <Left>
                     </Left>
                     <Right>
-                        <Button transparent >
-                            <Icon active name="chatbubbles" style={styles.icon} />
-                            <Text onPress={this.viewDetails }>Comments</Text>
-                        </Button>
+                        {this.cardComment()}
                     </Right>
                 </CardItem>
 
-                <ImageView 
+                <ImageView
                     data={this.props.data}
                     isVisible={this.state.isVisible}
-                    viewImage={this.viewImage} 
-                    viewDetails={this.viewDetails}/>
+                    viewImage={this.viewImage}
+                    viewDetails={this.viewDetails}
+                    withComment={this.props.withComment} />
             </Card>
         );
     }

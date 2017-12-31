@@ -17,7 +17,8 @@ class TimelineList extends Component {
         return (
             <Card
                 data={rowData}
-                navigate={this.props.navigate}/>
+                navigate={this.props.navigate}
+                withComment/>
         )
     }
 

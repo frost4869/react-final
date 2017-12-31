@@ -22,6 +22,12 @@ class CustomeImageView extends Component {
 
     renderImageViewFooter() {
         let title = this.title ? this.title : '';
+        let comment = this.props.withComment ? (
+            <Button transparent>
+                <Icon active name="chatbubbles" style={styles.footerText} />
+                <Text style={styles.footerText} onPress={this.viewDetails}>Comments</Text>
+            </Button>
+        ) : null
         return (
             <View style={styles.footer}>
                 <Text style={styles.footerTitle}>{title}</Text>
@@ -31,10 +37,7 @@ class CustomeImageView extends Component {
                 </ReadMore>
                 <Divider style={{ marginVertical: 10 }} />
                 <Right>
-                    <Button transparent>
-                        <Icon active name="chatbubbles" style={styles.footerText} />
-                        <Text style={styles.footerText} onPress={this.viewDetails}>Comments</Text>
-                    </Button>
+                    {comment}
                 </Right>
             </View>
         )
