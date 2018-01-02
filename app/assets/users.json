@@ -1,0 +1,10 @@
+{
+  "user01" : {
+    "avatar" : "https://relayfm.s3.amazonaws.com/uploads/user/avatar/4/user_avatar_mykehurley_artwork.png",
+    "username" : "Anthony"
+  },
+  "user02" : {
+    "avatar" : "http://endlesstheme.com/Perfect_Admin/img/user2.jpg",
+    "username" : "Monica"
+  }
+}
