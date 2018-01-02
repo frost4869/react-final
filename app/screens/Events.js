@@ -24,7 +24,9 @@ import t from 'tcomb-form-native'
 const Form = t.form.Form
 const CreateEvent = t.struct({
   titleEvent: t.String,
-  content: t.String,
+  description: t.String,
+  time: t.String,
+  image: t.String,
 })
 
 const slideAnimation = new SlideAnimation({
@@ -44,10 +46,15 @@ class Events extends Component {
         titleEvent: {
           factory: FloatingLabel,
         },
-        content: {
+        description: {
           factory: FloatingLabel,
         },
-
+        time: {
+          factory: FloatingLabel,
+        },
+        // image: {
+        //   factory: buttonSelectImage,
+        // },
       }
     }
   }
@@ -73,10 +80,11 @@ class Events extends Component {
   addNewEvent = () => {
     const paramEventInput = this.refs.form.getValue();
     const event = {
-      title: paramEventInput.titleEvent,
-      content: paramEventInput.content
+      titleEvent: paramEventInput.titleEvent || '',
+      description: paramEventInput.description || '',
+      // imageUrl: paramEventInput.image || '',
+      // time: paramEventInput.time || '',
     }
-    console.warn('title: ', event.title)
     this.setState({
       events: [...this.state.events, event]
     })
@@ -107,6 +115,14 @@ class Events extends Component {
     } finally {
       this.setState({ uploading: false })
     }
+  }
+
+  buttonSelectImage = () => {
+    return (
+      <View style={styles.container}>
+        <Button>select image</Button>
+      </View>
+    )
   }
 
   render() {
