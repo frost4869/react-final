@@ -20,15 +20,24 @@
   },
   "dependencies": {
     "expo": "^23.0.4",
+    "firebase": "^4.8.1",
+    "moment": "^2.20.1",
     "native-base": "^2.3.5",
     "react": "16.0.0",
     "react-native": "0.50.3",
     "react-native-action-button": "^2.8.3",
-    "react-native-elements": "^0.18.5",
     "react-native-floating-label": "^0.2.3",
     "react-native-popup-dialog": "^0.10.45",
     "react-native-vector-icons": "^4.4.3",
-    "react-navigation": "^1.0.0-beta.22",
-    "tcomb-form-native": "^0.6.11"
+    "tcomb-form-native": "^0.6.11",
+    "react-native-auto-height-image": "^0.3.4",
+    "react-native-elements": "^0.18.5",
+    "react-native-progress": "^3.4.0",
+    "react-native-image-view": "^1.2.2",
+    "react-native-keyboard-aware-scroll-view": "^0.4.1",
+    "react-native-read-more-text": "^1.0.0",
+    "react-native-timeline-listview": "^0.2.2",
+    "react-native-ui-kitten": "^2.0.1",
+    "react-navigation": "^1.0.0-beta.22"
   }
 }
