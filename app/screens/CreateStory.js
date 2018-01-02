@@ -8,9 +8,10 @@ import {
 } from "react-native";
 
 import { NavigationActions } from "react-navigation";
-
+import ProgressDialog from "../components/ProgressDialog";
 import { Icon } from "react-native-elements";
-
+import firebase from "../helpers/firebase";
+import { User } from "../helpers/constants";
 let handleSave = null;
 
 class CreateStory extends Component {
@@ -30,6 +31,7 @@ class CreateStory extends Component {
           size={24}
           name="send"
           color="#FFFFFF"
+          underlayColor="transparent"
           iconStyle={{ padding: 16 }}
           onPress={() => handleSave()}
         />
@@ -40,7 +42,8 @@ class CreateStory extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: ""
+      text: "",
+      loading: false
     };
     this.save = this.save.bind(this);
   }
@@ -52,6 +55,7 @@ class CreateStory extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <ProgressDialog isOpen={this.state.loading} />
         <ImageBackground
           style={styles.background}
           source={require("../assets/note_bg.jpeg")}
@@ -59,6 +63,8 @@ class CreateStory extends Component {
           <TextInput
             value={this.state.text}
             multiline={true}
+            placeholder="What's in your mind?"
+            placeholderTextColor="#9E9E9E"
             underlineColorAndroid="transparent"
             onChangeText={value => {
               this.setState({ text: value });
@@ -73,19 +79,37 @@ class CreateStory extends Component {
 
   save = () => {
     if (this.state.text.trim().length > 0) {
+      const id = this.generateId();
       const story = {
-        username: "David Beckham",
-        avatar:
-          "https://i.pinimg.com/originals/fe/d3/66/fed366a009cfc31f551211b37ee4a0b9.jpg",
+        userId: User.uId,
+        username: User.name,
+        avatar: User.avatar,
         message: this.state.text,
-        time: "27-12-2017"
+        time: Date.now()
       };
-      const backAction = NavigationActions.back();
-      this.props.navigation.dispatch(backAction);
-      this.props.navigation.state.params.onSave(story);
+      this.setState({ loading: true }, () => {
+        firebase
+          .database()
+          .ref("stories/" + id)
+          .set(story, error => {
+            this.setState({ loading: false }, () => {
+              if (error === null) {
+                const backAction = NavigationActions.back();
+                this.props.navigation.dispatch(backAction);
+                this.props.navigation.state.params.onSaved();
+              } else {
+                alert("Failed to create story!");
+              }
+            });
+          });
+      });
     } else {
       alert("Please enter a message");
     }
+  };
+
+  generateId = () => {
+    return Math.floor(Math.random() * 10000000000);
   };
 }
 
