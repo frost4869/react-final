@@ -95,7 +95,6 @@ class Home extends Component {
     }
 
     loadmore() {
-        console.log('loadmore')
         this.setState({
             loading: true,
         }, () => {
@@ -104,6 +103,8 @@ class Home extends Component {
             })
         })
     }
+
+    
 
     render() {
         return (

@@ -31,7 +31,8 @@ export const FooterTab = TabNavigator(
     Photos: {
       screen: Photos,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name="images" />
+        tabBarIcon: ({ tintColor }) => <Icon name="images" />,
+        header: null
       }
     },
     Events: {
