@@ -1,5 +1,13 @@
 {
   "expo": {
-    "sdkVersion": "23.0.0"
+    "sdkVersion": "23.0.0",
+    "name": "React Final",
+    "slug": "my-app",
+    "privacy": "public",
+    "icon": "./app/assets/app_icon.png",
+    "version": "1.0.0",
+    "android": {
+      "package": "com.coderschool.reactfinal"
+    }
   }
 }

@@ -1,22 +1,33 @@
 //import liraries
 import React, { Component } from "react";
+import { Card, CardItem } from "native-base";
 import { View, Text, StyleSheet, Image } from "react-native";
+import { User } from "../helpers/constants";
+var moment = require("moment");
 
 // create a component
 class StoryCard extends Component {
   render() {
     const { item } = this.props;
+    const timeString = moment(item.time).format("HH:mm - DD/MM/YYYY");
+    // fake current user
+    const userId = User.uId;
+    const backgroundStyle = {
+      backgroundColor: userId == item.userId ? "#F1F8E9" : "#F06292"
+    };
+    const textStyle = { color: userId == item.userId ? "#000000" : "#FFFFFF" };
+
     return (
-      <View style={styles.item}>
+      <Card style={[styles.item, backgroundStyle]}>
         <View style={styles.itemHeader}>
           <Image style={styles.avatar} source={{ uri: item.avatar }} />
           <View style={{ marginLeft: 8 }}>
-            <Text style={styles.username}>{item.username}</Text>
-            <Text style={styles.time}>{item.time}</Text>
+            <Text style={[styles.username, textStyle]}>{item.username}</Text>
+            <Text style={[styles.time, textStyle]}>{timeString}</Text>
           </View>
         </View>
-        <Text style={styles.message}>{item.message}</Text>
-      </View>
+        <Text style={[styles.message, textStyle]}>{item.message}</Text>
+      </Card>
     );
   }
 }
@@ -25,15 +36,7 @@ class StoryCard extends Component {
 const styles = StyleSheet.create({
   item: {
     padding: 16,
-    backgroundColor: "#F1F8E9",
-    shadowColor: "#0000",
-    shadowOffset: {
-      width: 0,
-      height: 3
-    },
-    shadowRadius: 5,
-    shadowOpacity: 1.0,
-    elevation: 4
+    backgroundColor: "#F1F8E9"
   },
   itemBackground: {
     width: "100%",
@@ -41,7 +44,8 @@ const styles = StyleSheet.create({
   },
   itemHeader: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: "transparent"
   },
   avatar: {
     width: 48,
@@ -50,17 +54,18 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 14,
+    fontWeight: "bold",
     color: "#000000"
   },
   time: {
-    fontSize: 12,
+    fontSize: 11,
     color: "#9E9E9E"
   },
   message: {
     fontSize: 14,
     color: "#000000",
     fontStyle: "italic",
-    marginTop:8
+    marginTop: 8
   }
 });
 

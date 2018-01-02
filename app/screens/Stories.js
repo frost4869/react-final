@@ -12,8 +12,7 @@ import {
 } from "react-native";
 import { Icon, Button } from "react-native-elements";
 import StoryCard from "../components/story_card";
-
-// const data = `{"stories":[{"username":"David Beckham","avatar":"https://i.pinimg.com/originals/fe/d3/66/fed366a009cfc31f551211b37ee4a0b9.jpg","message":"What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s","time":"24-12-2017"},{"username":"David Beckham","avatar":"https://i.pinimg.com/originals/fe/d3/66/fed366a009cfc31f551211b37ee4a0b9.jpg","message":"What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s","time":"24-12-2017"},{"username":"David Beckham","avatar":"https://i.pinimg.com/originals/fe/d3/66/fed366a009cfc31f551211b37ee4a0b9.jpg","message":"What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s","time":"24-12-2017"},{"username":"David Beckham","avatar":"https://i.pinimg.com/originals/fe/d3/66/fed366a009cfc31f551211b37ee4a0b9.jpg","message":"What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s","time":"24-12-2017"}]}`;
+import firebase from "../helpers/firebase";
 
 // create a component
 class Stories extends Component {
@@ -24,11 +23,15 @@ class Stories extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stories: [],
-      loading: false
+      stories: []
     };
+    this.loadStories = this.loadStories.bind(this);
     this.createNewStory = this.createNewStory.bind(this);
     this.addNewStory = this.addNewStory.bind(this);
+  }
+
+  componentDidMount() {
+    this.loadStories();
   }
 
   render() {
@@ -63,9 +66,30 @@ class Stories extends Component {
     return <View style={styles.separator} />;
   };
 
+  loadStories = () => {
+    firebase
+      .database()
+      .ref("stories")
+      .orderByChild("time")
+      .on("value", snapshot => {
+        var stories = [];
+        snapshot.forEach(item => {
+          stories.push({
+            id: item.val(),
+            userId:item.val().userId,
+            username: item.val().username,
+            avatar: item.val().avatar,
+            time: item.val().time,
+            message: item.val().message
+          });
+        });
+        this.setState({ stories });
+      });
+  };
+
   createNewStory = () => {
     this.props.navigation.navigate("CreateStory", {
-      onSave: this.addNewStory
+      onSaved: this.loadStories
     });
   };
 
@@ -96,7 +120,7 @@ const styles = StyleSheet.create({
     width: 54,
     height: 54,
     borderRadius: 27,
-    backgroundColor: "#ee6e73",
+    backgroundColor: "#4CAF50",
     position: "absolute",
     bottom: 10,
     right: 10,
