@@ -4,6 +4,9 @@ import { View, Text, StyleSheet, FlatList, Platform, ActivityIndicator } from 'r
 import { fetchImages } from "../helpers/fetch-data";
 import Card from "../components/timeline-card";
 import { ImagesGrid } from "../components/timeline-card";
+import ActionButton from "react-native-action-button";
+import { Icon } from "react-native-elements";
+import { ImagePicker } from "expo";
 // create a component
 class Photos extends Component {
 
@@ -14,6 +17,7 @@ class Photos extends Component {
             images: [],
             loading: true
         }
+
     }
 
     componentDidMount() {
@@ -28,20 +32,59 @@ class Photos extends Component {
         });
     }
 
+    uploadFromDevice = async () => {
+        let pickerResult = await ImagePicker.launchImageLibraryAsync({
+            base64: true,
+            quality: 1
+        })
+
+        this.handleImagePicked(pickerResult)
+    }
+
+    takePhoto = async () => {
+        let pickerResult = await ImagePicker.launchCameraAsync({
+            base64: true,
+            quality: 1
+        })
+
+        this.handleImagePicked(pickerResult)
+    }
+
+    handleImagePicked = async pickerResult => {
+        if (pickerResult.cancelled != true) {
+            const navigate = this.props.navigation.navigate;
+            navigate("CreatePhoto", pickerResult);
+        }
+    }
+
     render() {
         let content;
         if (this.state.loading) {
-            content = <ActivityIndicator size='large'/>
+            content = <ActivityIndicator size='large' />
         } else {
             const { images } = this.state;
             content = (
-                <ImagesGrid data={images} navigate={this.props.navigation.navigate}/>
+                <ImagesGrid data={images} navigate={this.props.navigation.navigate} />
             )
         }
 
         return (
             <View style={styles.container}>
                 {content}
+                <ActionButton buttonColor='#ec407a'>
+                    <ActionButton.Item title='Pick from library' color='#FF4081' onPress={this.uploadFromDevice}>
+                        <Icon name='image'
+                            color='#fff'
+                            underlayColor='transparent'
+                            size={24} />
+                    </ActionButton.Item>
+                    <ActionButton.Item title='Take a photo' color='#FF80AB' onPress={this.takePhoto}>
+                        <Icon name='camera'
+                            color='#fff'
+                            underlayColor='transparent'
+                            size={24} />
+                    </ActionButton.Item>
+                </ActionButton>
             </View>
         );
     }

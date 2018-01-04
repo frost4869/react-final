@@ -176,8 +176,6 @@ export class ImagesGrid extends Component {
         this.setState({
             currentImage: image
         })
-
-        console.log(image)
     }
 
     showImageView(){

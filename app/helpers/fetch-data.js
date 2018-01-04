@@ -1,4 +1,15 @@
 import FireBase from "../helpers/firebase";
+import { AsyncStorage } from "react-native";
+
+export function fetchCoupleInfo() {
+    return new Promise((resolve, reject) => {
+        FireBase.database()
+            .ref("couple_info")
+            .on("value", snapshot => {
+                resolve(snapshot.val().start_date)
+            })
+    })
+}
 
 export function fetchImages() {
     return new Promise((resolve, reject) => {

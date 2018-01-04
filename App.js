@@ -19,6 +19,7 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
+    console.disableYellowBox = true;
     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
     this.loadFonts();
   }
@@ -45,7 +46,6 @@ export default class App extends React.Component {
 
     return (
       <Container>
-        {/* <StatusBar hidden /> */}
         <Drawer />
       </Container>
     );

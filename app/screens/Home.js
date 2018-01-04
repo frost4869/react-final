@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ImageBackground, Platform } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Platform, AsyncStorage } from 'react-native';
 import { Avatar } from "../components/avatar";
 import { Container, Content, Grid, Row, Col, Icon, H2, H3, H1, Body } from "native-base";
 import { RkStyleSheet } from "react-native-ui-kitten";
@@ -10,6 +10,8 @@ import Cover from "../assets/cover.jpg";
 import { LinearGradient } from "expo";
 import Moment from "moment";
 import TimeLine from "../components/time-line";
+import { fetchCoupleInfo } from "../helpers/fetch-data";
+
 // create a component
 class Home extends Component {
 
@@ -70,6 +72,8 @@ class Home extends Component {
             data: [],
             isRefreshing: false,
             loading: true,
+            startDate: 0,
+            days: 0,
         }
 
         this.refresh = this.refresh.bind(this);
@@ -77,6 +81,14 @@ class Home extends Component {
     }
 
     componentWillMount() {
+        fetchCoupleInfo().then((start_date) => {
+            start_date = Moment(start_date);
+            let now = Moment();
+
+            this.setState({ days: now.diff(start_date, 'days') });
+        })
+
+
         this.setState({
             data: this.data,
             loading: false
@@ -104,7 +116,7 @@ class Home extends Component {
         })
     }
 
-    
+
 
     render() {
         return (
@@ -116,7 +128,7 @@ class Home extends Component {
                             <Grid>
                                 <Row size={60}>
                                     <Text style={styles.dayCounter}>
-                                        903
+                                        {this.state.days}
                                         <Text style={{ fontSize: 40, fontFamily: 'RobotoLight' }}>days</Text>
                                     </Text>
                                 </Row>
@@ -148,7 +160,7 @@ class Home extends Component {
                         refresh={this.refresh}
                         isRefreshing={this.state.isRefreshing}
                         loading={this.state.loading}
-                        navigate={this.props.navigation.navigate}/>
+                        navigate={this.props.navigation.navigate} />
 
                 </Content>
             </Container>

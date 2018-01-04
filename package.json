@@ -19,6 +19,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@remobile/react-native-file": "^1.0.4",
+    "cloudinary-core": "^2.4.0",
     "expo": "^23.0.4",
     "firebase": "^4.8.1",
     "moment": "^2.20.1",
