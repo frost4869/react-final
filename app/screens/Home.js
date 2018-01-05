@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ImageBackground, Platform } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Platform, AsyncStorage } from 'react-native';
 import { Avatar } from "../components/avatar";
 import { Container, Content, Grid, Row, Col, Icon, H2, H3, H1, Body } from "native-base";
 import { RkStyleSheet } from "react-native-ui-kitten";
@@ -10,6 +10,8 @@ import Cover from "../assets/cover.jpg";
 import { LinearGradient } from "expo";
 import Moment from "moment";
 import TimeLine from "../components/time-line";
+import { fetchCoupleInfo } from "../helpers/fetch-data";
+
 // create a component
 class Home extends Component {
 
@@ -18,8 +20,8 @@ class Home extends Component {
 
         this.data = [
             {
-                time: new Date().getFullYear(),
-                timestamp: Moment().format('MMM, DD [at] hh:ss a'),
+                time: Moment().year(),
+                timestamp: Moment().valueOf(),
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.',
                 type: 'image',
                 imageUrl: 'https://cdn-media-1.lifehack.org/wp-content/files/2015/07/Couples-Read-Together-Stay-Together.jpg',
@@ -27,40 +29,40 @@ class Home extends Component {
                 icon: (<Icon name='heart' />)
             },
             {
-                time: new Date().getFullYear(),
-                timestamp: Moment().format('MMM, DD [at] hh:ss a'),
+                time: Moment().year(),
+                timestamp: Moment().valueOf(),
                 title: 'Just some story',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
                 type: 'story',
                 username: 'Monica'
             },
             {
-                time: new Date().getFullYear(),
-                timestamp: Moment().format('MMM, DD [at] hh:ss a'),
+                time: Moment().year(),
+                timestamp: Moment().valueOf(),
                 title: 'Story of our final project',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
                 type: 'story',
                 username: 'Monica'
             },
             {
-                time: new Date().getFullYear(),
-                timestamp: Moment().format('MMM, DD [at] hh:ss a'),
+                time: Moment().year(),
+                timestamp: Moment().valueOf(),
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                 type: 'image',
                 imageUrl: 'https://i.pinimg.com/736x/fd/63/f9/fd63f9f0b416430cc6d587b51052bd6f--love-photos-couple-couples-love.jpg',
                 username: 'Anthony'
             },
             {
-                time: new Date().getFullYear(),
-                timestamp: Moment().format('MMM, DD [at] hh:ss a'),
+                time: Moment().year(),
+                timestamp: Moment().valueOf(),
                 title: 'First dinner together !',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
                 imageUrl: 'https://www.bolde.com/wp-content/uploads/2017/03/iStock-504535670.jpg',
                 type: 'event'
             },
             {
-                time: new Date().getFullYear(),
-                timestamp: Moment().format('MMM, DD [at] hh:ss a'),
+                time: Moment().year(),
+                timestamp: Moment().valueOf(),
                 title: "2 years !!",
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
                 type: 'event'
@@ -70,6 +72,8 @@ class Home extends Component {
             data: [],
             isRefreshing: false,
             loading: true,
+            startDate: 0,
+            days: 0,
         }
 
         this.refresh = this.refresh.bind(this);
@@ -77,6 +81,14 @@ class Home extends Component {
     }
 
     componentWillMount() {
+        fetchCoupleInfo().then((start_date) => {
+            start_date = Moment(start_date);
+            let now = Moment();
+
+            this.setState({ days: now.diff(start_date, 'days') });
+        })
+
+
         this.setState({
             data: this.data,
             loading: false
@@ -95,7 +107,6 @@ class Home extends Component {
     }
 
     loadmore() {
-        console.log('loadmore')
         this.setState({
             loading: true,
         }, () => {
@@ -115,7 +126,7 @@ class Home extends Component {
                             <Grid>
                                 <Row size={60}>
                                     <Text style={styles.dayCounter}>
-                                        903
+                                        {this.state.days}
                                         <Text style={{ fontSize: 40, fontFamily: 'RobotoLight' }}>days</Text>
                                     </Text>
                                 </Row>
@@ -147,7 +158,7 @@ class Home extends Component {
                         refresh={this.refresh}
                         isRefreshing={this.state.isRefreshing}
                         loading={this.state.loading}
-                        navigate={this.props.navigation.navigate}/>
+                        navigate={this.props.navigation.navigate} />
 
                 </Content>
             </Container>

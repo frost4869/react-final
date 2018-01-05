@@ -19,6 +19,9 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@remobile/react-native-file": "^1.0.4",
+    "cloudinary-core": "^2.4.0",
+    "cloudinary-react": "^1.0.4",
     "expo": "^23.0.4",
     "firebase": "^4.8.1",
     "moment": "^2.20.1",
@@ -26,18 +29,21 @@
     "react": "16.0.0",
     "react-native": "0.50.3",
     "react-native-action-button": "^2.8.3",
-    "react-native-floating-label": "^0.2.3",
-    "react-native-popup-dialog": "^0.10.45",
-    "react-native-vector-icons": "^4.4.3",
-    "tcomb-form-native": "^0.6.11",
     "react-native-auto-height-image": "^0.3.4",
+    "react-native-easy-toast": "^1.0.9",
     "react-native-elements": "^0.18.5",
-    "react-native-progress": "^3.4.0",
+    "react-native-floating-label": "^0.2.3",
+    "react-native-image-progress": "^1.0.1",
     "react-native-image-view": "^1.2.2",
     "react-native-keyboard-aware-scroll-view": "^0.4.1",
+    "react-native-popup-dialog": "^0.10.45",
+    "react-native-progress": "^3.4.0",
     "react-native-read-more-text": "^1.0.0",
+    "react-native-super-grid": "^2.0.1",
     "react-native-timeline-listview": "^0.2.2",
     "react-native-ui-kitten": "^2.0.1",
-    "react-navigation": "^1.0.0-beta.22"
+    "react-native-vector-icons": "^4.4.3",
+    "react-navigation": "^1.0.0-beta.22",
+    "tcomb-form-native": "^0.6.11"
   }
 }
