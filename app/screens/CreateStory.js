@@ -10,8 +10,6 @@ import {
 import { NavigationActions } from "react-navigation";
 import ProgressDialog from "../components/ProgressDialog";
 import { Icon } from "react-native-elements";
-import firebase from "../helpers/firebase";
-import { User } from "../helpers/constants";
 let handleSave = null;
 
 class CreateStory extends Component {
@@ -81,14 +79,13 @@ class CreateStory extends Component {
     if (this.state.text.trim().length > 0) {
       const id = this.generateId();
       const story = {
-        userId: User.uId,
-        username: User.name,
-        avatar: User.avatar,
+        userId: global.user.id,
+        username: global.user.username,
         message: this.state.text,
         time: Date.now()
       };
       this.setState({ loading: true }, () => {
-        firebase
+        global.firebase
           .database()
           .ref("stories/" + id)
           .set(story, error => {

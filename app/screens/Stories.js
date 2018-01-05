@@ -67,7 +67,9 @@ class Stories extends Component {
   };
 
   loadStories = () => {
-    firebase
+    const user = global.user;
+    const partner = global.partner;
+    global.firebase
       .database()
       .ref("stories")
       .orderByChild("time")
@@ -76,9 +78,11 @@ class Stories extends Component {
         snapshot.forEach(item => {
           stories.push({
             id: item.val(),
-            userId:item.val().userId,
-            username: item.val().username,
-            avatar: item.val().avatar,
+            userId: item.val().userId,
+            username:
+              item.val().userId === user.id ? user.username : partner.username,
+            avatar:
+              item.val().userId === user.id ? user.avatar : partner.avatar,
             time: item.val().time,
             message: item.val().message
           });
