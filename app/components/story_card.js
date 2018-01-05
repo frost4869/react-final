@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import { Card, CardItem } from "native-base";
 import { View, Text, StyleSheet, Image } from "react-native";
-import { User } from "../helpers/constants";
 var moment = require("moment");
 
 // create a component
@@ -11,7 +10,7 @@ class StoryCard extends Component {
     const { item } = this.props;
     const timeString = moment(item.time).format("HH:mm - DD/MM/YYYY");
     // fake current user
-    const userId = User.uId;
+    const userId = global.user.id;
     const backgroundStyle = {
       backgroundColor: userId == item.userId ? "#F1F8E9" : "#F06292"
     };
