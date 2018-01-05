@@ -67,28 +67,28 @@ class Stories extends Component {
   };
 
   loadStories = () => {
-    const user = global.user;
-    const partner = global.partner;
-    global.firebase
-      .database()
-      .ref("stories")
-      .orderByChild("time")
-      .on("value", snapshot => {
-        var stories = [];
-        snapshot.forEach(item => {
-          stories.push({
-            id: item.val(),
-            userId: item.val().userId,
-            username:
-              item.val().userId === user.id ? user.username : partner.username,
-            avatar:
-              item.val().userId === user.id ? user.avatar : partner.avatar,
-            time: item.val().time,
-            message: item.val().message
-          });
-        });
-        this.setState({ stories });
-      });
+    // const user = global.user;
+    // const partner = global.partner;
+    // global.firebase
+    //   .database()
+    //   .ref("stories")
+    //   .orderByChild("time")
+    //   .on("value", snapshot => {
+    //     var stories = [];
+    //     snapshot.forEach(item => {
+    //       stories.push({
+    //         id: item.val(),
+    //         userId: item.val().userId,
+    //         username:
+    //           item.val().userId === user.id ? user.username : partner.username,
+    //         avatar:
+    //           item.val().userId === user.id ? user.avatar : partner.avatar,
+    //         time: item.val().time,
+    //         message: item.val().message
+    //       });
+    //     });
+    //     this.setState({ stories });
+    //   });
   };
 
   createNewStory = () => {
