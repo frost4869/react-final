@@ -10,22 +10,15 @@ class CustomeImageView extends Component {
 
     constructor(props) {
         super(props)
-
-        this.imageUrl = props.data.imageUrl;
-        this.des = props.data.description;
-        this.title = props.data.title;
-
-        this.viewDetails = props.viewDetails;
-
         this.renderImageViewFooter = this.renderImageViewFooter.bind(this);
     }
 
     renderImageViewFooter() {
-        let title = this.title ? this.title : '';
+        let title = this.props.data.title ? this.props.data.title : '';
         let comment = this.props.withComment ? (
             <Button transparent>
                 <Icon active name="chatbubbles" style={styles.footerText} />
-                <Text style={styles.footerText} onPress={this.viewDetails}>Comments</Text>
+                <Text style={styles.footerText} onPress={this.props.viewDetails}>Comments</Text>
             </Button>
         ) : null
         return (
@@ -33,7 +26,7 @@ class CustomeImageView extends Component {
                 <Text style={styles.footerTitle}>{title}</Text>
                 <ReadMore
                     numberOfLines={2}>
-                    <Text style={styles.footerText}>{this.des}</Text>
+                    <Text style={styles.footerText}>{this.props.data.description}</Text>
                 </ReadMore>
                 <Divider style={{ marginVertical: 10 }} />
                 <Right>
@@ -44,9 +37,9 @@ class CustomeImageView extends Component {
     }
 
     render() {
-        const { isVisible, viewImage, viewDetails } = this.props;
+        const { isVisible, viewImage } = this.props;
         return (
-            <ImageView source={{ uri: this.imageUrl }}
+            <ImageView source={{ uri: this.props.data.imageUrl }}
                 isVisible={isVisible}
                 imageWidth={Dimensions.get('window').width}
                 onClose={viewImage}

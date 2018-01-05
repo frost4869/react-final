@@ -12,6 +12,7 @@ import Photos from "../screens/Photos";
 import Events from "../screens/Events";
 import CreateStory from "../screens/CreateStory";
 import Details from "../screens/Details";
+import CreatePhoto from "../screens/CreatePhoto";
 
 export const FooterTab = TabNavigator(
   {
@@ -31,7 +32,8 @@ export const FooterTab = TabNavigator(
     Photos: {
       screen: Photos,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name="images" />
+        tabBarIcon: ({ tintColor }) => <Icon name="images" />,
+        header: null
       }
     },
     Events: {
@@ -65,6 +67,9 @@ export const StackScreens = StackNavigator(
     },
     Details: {
       screen: Details
+    },
+    CreatePhoto: {
+      screen: CreatePhoto
     }
   },
 )

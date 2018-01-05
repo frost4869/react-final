@@ -5,6 +5,7 @@ import { Spinner, Container } from "native-base";
 import { Expo, Font, AppLoading } from 'expo'
 import { RkTheme } from "react-native-ui-kitten";
 import { AvatarTypes } from "./app/components/avatar/types";
+import Toast, { DURATION } from "react-native-easy-toast";
 
 RkTheme.registerComponent('Avatar', AvatarTypes);
 
@@ -19,6 +20,7 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
+    console.disableYellowBox = true;
     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
     this.loadFonts();
   }
@@ -44,10 +46,12 @@ export default class App extends React.Component {
     }
 
     return (
+
       <Container>
-        {/* <StatusBar hidden /> */}
-        <Drawer />
+          <Drawer />
+          <Toast ref="toast"/>
       </Container>
+
     );
   }
 }
@@ -60,6 +64,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-
-/////

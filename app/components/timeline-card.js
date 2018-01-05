@@ -1,15 +1,22 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import {
     Card, CardItem, Thumbnail, Text, Button,
     Icon, Left, Right, Body
 } from "native-base";
 import ReadMore from "react-native-read-more-text";
+import Moment from "moment";
+
 import Male from '../assets/male.png'
 import Female from '../assets/female.jpg'
 
 import ImageView from "../components/image-view";
+import ImageGridView from "react-native-super-grid";
+
+import Image from "react-native-image-progress";
+import {ProgressCircle} from "react-native-progress/Circle";
+
 
 // create a component
 class TimeLineCard extends Component {
@@ -17,13 +24,7 @@ class TimeLineCard extends Component {
     constructor(props) {
         super(props);
 
-        this.caption = this.props.data.title;
-        this.des = this.props.data.description;
-        this.type = this.props.data.type;
-        this.timestamp = this.props.data.timestamp;
-
-        this.username = this.props.data.username;
-        this.image = this.props.data.imageUrl;
+        this.users = require('../assets/users.json')
 
         this.state = {
             isVisible: false
@@ -31,6 +32,7 @@ class TimeLineCard extends Component {
 
         this.viewImage = this.viewImage.bind(this);
         this.viewDetails = this.viewDetails.bind(this);
+
     }
 
     viewImage() {
@@ -40,13 +42,13 @@ class TimeLineCard extends Component {
     }
 
     CardHeader(props) {
-        switch (this.type) {
+        switch (this.props.data.type) {
             case 'event':
                 return (
                     <CardItem>
                         <Body style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={styles.title}>{this.caption}</Text>
-                            <Text note>{this.timestamp}</Text>
+                            <Text style={styles.title}>{this.props.data.title}</Text>
+                            <Text note>{Moment(this.props.data.timestamp).format('MMM, DD [at] hh:ss a')}</Text>
                         </Body>
                     </CardItem >
                 )
@@ -56,8 +58,8 @@ class TimeLineCard extends Component {
                         <Left>
                             <Thumbnail source={require('../assets/male.png')} />
                             <Body>
-                                <Text style={styles.title}>{this.username}</Text>
-                                <Text note>Posted {this.timestamp}</Text>
+                                <Text style={styles.title}>Username</Text>
+                                <Text note>{Moment(this.props.data.timestamp).format('MMM, DD [at] hh:ss a')}</Text>
                             </Body>
                         </Left>
                     </CardItem>
@@ -66,29 +68,29 @@ class TimeLineCard extends Component {
     }
 
     CardDetails(props) {
-        switch (this.type) {
+        switch (this.props.data.type) {
             case 'story':
                 return (
-                    <View>
-                        <Text style={styles.caption} >{this.caption}</Text>
+                    <View style={styles.container}>
+                        <Text style={styles.caption} >{this.props.data.title}</Text>
                         <ReadMore
                             numberOfLines={4}>
-                            <Text>{this.des}</Text>
+                            <Text>{this.props.data.description}</Text>
                         </ReadMore>
                     </View>
                 )
             case 'image':
                 return (
-                    <View>
+                    <View style={styles.container}>
                         <ReadMore
                             numberOfLines={4}>
-                            <Text>{this.des}</Text>
+                            <Text>{this.props.data.description}</Text>
                         </ReadMore>
                         <TouchableOpacity
-                            key={this.image}
+                            key={this.props.data.imageUrl}
                             onPress={this.viewImage}
                             activeOpacity={0.8}>
-                            <Image source={{ uri: this.image }} style={styles.image}
+                            <Image source={{ uri: this.props.data.imageUrl }} style={styles.image}
                                 resizeMode='cover' />
                         </TouchableOpacity>
                     </View>
@@ -96,13 +98,13 @@ class TimeLineCard extends Component {
                 )
             default: //events
                 return (
-                    <View>
-                        <Text style={styles.caption}>{this.des}</Text>
+                    <View style={styles.container}>
+                        <Text style={styles.caption}>{this.props.data.description}</Text>
                         <TouchableOpacity
-                            key={this.image}
+                            key={this.props.data.imageUrl}
                             onPress={this.viewImage}
                             activeOpacity={0.8}>
-                            <Image source={{ uri: this.image }} style={styles.image}
+                            <Image source={{ uri: this.props.data.imageUrl }} style={styles.image}
                                 resizeMode='cover' />
                         </TouchableOpacity>
                     </View>
@@ -129,7 +131,6 @@ class TimeLineCard extends Component {
     }
 
     render() {
-
         return (
             <Card style={styles.card}>
 
@@ -158,6 +159,76 @@ class TimeLineCard extends Component {
     }
 }
 
+export class ImagesGrid extends Component {
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            isVisible: false,
+            currentImage: '',
+        }
+
+        this.renderItem = this.renderItem.bind(this);
+        this.viewImage = this.viewImage.bind(this);
+        this.viewDetails = this.viewDetails.bind(this);
+        this.showImageView = this.showImageView.bind(this);
+    }
+
+    viewImage(image) {
+        this.showImageView();
+        this.setState({
+            currentImage: image
+        })
+    }
+
+    showImageView() {
+        this.setState({
+            isVisible: !this.state.isVisible,
+        })
+    }
+
+    viewDetails() {
+        this.setState({
+            isVisible: false
+        });
+        this.props.navigate("Details", this.state.currentImage);
+    }
+
+    renderItem(item) {
+        return (
+            <View style={styles.container}>
+                <TouchableOpacity
+                    key={item.imageUrl}
+                    onPress={() => this.viewImage(item)}
+                    activeOpacity={0.8}>
+                    <Image source={{ uri: item.imageUrl }} style={{ width: '100%', height: 150, borderRadius: 5, }} 
+                        indicator={ProgressCircle}/>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <ImageGridView
+                    items={this.props.data}
+                    renderItem={item => this.renderItem(item)}
+                    itemDimension={130}
+                    withComment />
+
+                <ImageView
+                    data={this.state.currentImage}
+                    isVisible={this.state.isVisible}
+                    viewImage={this.showImageView}
+                    viewDetails={this.viewDetails}
+                    withComment />
+            </View>
+        )
+    }
+}
+
 // define your styles
 const styles = StyleSheet.create({
     card: {
@@ -176,7 +247,20 @@ const styles = StyleSheet.create({
     },
     icon: {
         color: '#ec407a'
-    }
+    },
+    container: {
+        flex: 1
+    },
+    itemContainer: {
+        flex: 1,
+        padding: 10,
+        height: 150,
+    },
+    itemName: {
+        fontSize: 16,
+        color: '#fff',
+        fontWeight: '600',
+    },
 });
 
 //make this component available to the app
