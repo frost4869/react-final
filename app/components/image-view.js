@@ -10,7 +10,6 @@ class CustomeImageView extends Component {
 
     constructor(props) {
         super(props)
-
         this.renderImageViewFooter = this.renderImageViewFooter.bind(this);
     }
 

@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Platform, ActivityIndicator, ListView, ScrollView, RefreshControl } from 'react-native';
 import { fetchImages } from "../helpers/fetch-data";
 import Card from "../components/timeline-card";
 import { ImagesGrid } from "../components/timeline-card";
@@ -15,19 +15,26 @@ class Photos extends Component {
 
         this.state = {
             images: [],
-            loading: true
+            loading: false,
+            show: false,
         }
-
+        this.loadImages = this.loadImages.bind(this)
     }
 
     componentDidMount() {
+        this.loadImages();
+    }
+
+    loadImages() {
         this.setState({
             images: [],
+            loading: true
         })
         fetchImages().then(data => {
+            console.log(data)
             this.setState({
                 images: data,
-                loading: false
+                loading: false,
             })
         });
     }
@@ -58,19 +65,16 @@ class Photos extends Component {
     }
 
     render() {
-        let content;
-        if (this.state.loading) {
-            content = <ActivityIndicator size='large' />
-        } else {
-            const { images } = this.state;
-            content = (
-                <ImagesGrid data={images} navigate={this.props.navigation.navigate} />
-            )
-        }
-
         return (
             <View style={styles.container}>
-                {content}
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.loading}
+                            onRefresh={this.loadImages} />
+                    }>
+                    <ImagesGrid data={this.state.images} navigate={this.props.navigation.navigate} />
+                </ScrollView>
                 <ActionButton buttonColor='#ec407a'>
                     <ActionButton.Item title='Pick from library' color='#FF4081' onPress={this.uploadFromDevice}>
                         <Icon name='image'
@@ -86,6 +90,7 @@ class Photos extends Component {
                     </ActionButton.Item>
                 </ActionButton>
             </View>
+
         );
     }
 }

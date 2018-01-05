@@ -21,6 +21,7 @@
   "dependencies": {
     "@remobile/react-native-file": "^1.0.4",
     "cloudinary-core": "^2.4.0",
+    "cloudinary-react": "^1.0.4",
     "expo": "^23.0.4",
     "firebase": "^4.8.1",
     "moment": "^2.20.1",
@@ -29,8 +30,10 @@
     "react-native": "0.50.3",
     "react-native-action-button": "^2.8.3",
     "react-native-auto-height-image": "^0.3.4",
+    "react-native-easy-toast": "^1.0.9",
     "react-native-elements": "^0.18.5",
     "react-native-floating-label": "^0.2.3",
+    "react-native-image-progress": "^1.0.1",
     "react-native-image-view": "^1.2.2",
     "react-native-keyboard-aware-scroll-view": "^0.4.1",
     "react-native-popup-dialog": "^0.10.45",

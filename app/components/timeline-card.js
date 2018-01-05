@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import {
     Card, CardItem, Thumbnail, Text, Button,
     Icon, Left, Right, Body
@@ -13,6 +13,9 @@ import Female from '../assets/female.jpg'
 
 import ImageView from "../components/image-view";
 import ImageGridView from "react-native-super-grid";
+
+import Image from "react-native-image-progress";
+import {ProgressCircle} from "react-native-progress/Circle";
 
 
 // create a component
@@ -29,6 +32,7 @@ class TimeLineCard extends Component {
 
         this.viewImage = this.viewImage.bind(this);
         this.viewDetails = this.viewDetails.bind(this);
+
     }
 
     viewImage() {
@@ -44,7 +48,7 @@ class TimeLineCard extends Component {
                     <CardItem>
                         <Body style={{ alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={styles.title}>{this.props.data.title}</Text>
-                            <Text note>{Moment().milliseconds(this.props.data.timestamp).format('MMM, DD [at] hh:ss a')}</Text>
+                            <Text note>{Moment(this.props.data.timestamp).format('MMM, DD [at] hh:ss a')}</Text>
                         </Body>
                     </CardItem >
                 )
@@ -55,7 +59,7 @@ class TimeLineCard extends Component {
                             <Thumbnail source={require('../assets/male.png')} />
                             <Body>
                                 <Text style={styles.title}>Username</Text>
-                                <Text note>{Moment().milliseconds(this.props.data.timestamp).format('MMM, DD [at] hh:ss a')}</Text>
+                                <Text note>{Moment(this.props.data.timestamp).format('MMM, DD [at] hh:ss a')}</Text>
                             </Body>
                         </Left>
                     </CardItem>
@@ -178,7 +182,7 @@ export class ImagesGrid extends Component {
         })
     }
 
-    showImageView(){
+    showImageView() {
         this.setState({
             isVisible: !this.state.isVisible,
         })
@@ -198,7 +202,8 @@ export class ImagesGrid extends Component {
                     key={item.imageUrl}
                     onPress={() => this.viewImage(item)}
                     activeOpacity={0.8}>
-                    <Image source={{ uri: item.imageUrl }} style={{ width: '100%', height: 150, borderRadius: 5, }} />
+                    <Image source={{ uri: item.imageUrl }} style={{ width: '100%', height: 150, borderRadius: 5, }} 
+                        indicator={ProgressCircle}/>
                 </TouchableOpacity>
             </View>
         )
@@ -217,8 +222,8 @@ export class ImagesGrid extends Component {
                     data={this.state.currentImage}
                     isVisible={this.state.isVisible}
                     viewImage={this.showImageView}
-                    viewDetails={this.viewDetails} 
-                    withComment/>
+                    viewDetails={this.viewDetails}
+                    withComment />
             </View>
         )
     }

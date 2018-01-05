@@ -5,6 +5,7 @@ import { Spinner, Container } from "native-base";
 import { Expo, Font, AppLoading } from 'expo'
 import { RkTheme } from "react-native-ui-kitten";
 import { AvatarTypes } from "./app/components/avatar/types";
+import Toast, { DURATION } from "react-native-easy-toast";
 
 RkTheme.registerComponent('Avatar', AvatarTypes);
 
@@ -45,9 +46,12 @@ export default class App extends React.Component {
     }
 
     return (
+
       <Container>
-        <Drawer />
+          <Drawer />
+          <Toast ref="toast"/>
       </Container>
+
     );
   }
 }
@@ -60,6 +64,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-
-/////

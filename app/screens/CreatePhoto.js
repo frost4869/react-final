@@ -1,14 +1,21 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Platform, Image, ActivityIndicator, Dimensions, TextInput, ActivityIndicatorIOS } from 'react-native';
+import {
+    View, Text, StyleSheet, Platform, Image, ActivityIndicator, Dimensions, TextInput,
+    Alert
+} from 'react-native';
 import { Icon } from "react-native-elements";
 import Uploader from "../helpers/cloudinary";
 import { Card, Thumbnail, CardItem, Left, Body, Container, Content } from "native-base";
-
+import Moment from "moment";
+import FireBase from '../helpers/firebase';
 
 let handleSave = null;
 // create a component
 class CreatePhoto extends Component {
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms))
+    }
 
     static navigationOptions = navigation => {
         return {
@@ -50,21 +57,47 @@ class CreatePhoto extends Component {
         handleSave = this.savePhoto;
     }
 
-    savePhoto = () => {
+    savePhoto = async () => {
+        if (this.state.caption.trim().length == 0) {
+            Alert.alert("Not so fast !", "Write something nice !")
+            return;
+        }
+
         this.setState({
             isUploading: true
         })
+
         Uploader(this.photoObj.base64).then(imageUrl => {
             console.log(imageUrl)
-            this.setState({
-                isUploading: false,
-            })
+            let id = Moment().valueOf();
+            let photo = {
+                description: this.state.caption,
+                imageUrl: imageUrl,
+                time: Moment().year(),
+                timestamp: Moment().valueOf(),
+                userId: 'user001'
+            }
+
+            FireBase
+                .database()
+                .ref("images/" + id)
+                .set(photo, error => {
+                    this.setState({
+                        isUploading: false,
+                    })
+                    this.props.navigation.navigate("Photos");
+                })
         })
     }
 
     render() {
         if (this.state.isUploading) {
-            return <ActivityIndicator size={40} style={{ justifyContent: 'center', alignContent: 'center', flex: 1 }} />
+            return (
+                <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+                    <ActivityIndicator size={40} />
+                    <Text style={{ fontSize: 20 }}>Just a sec...</Text>
+                </View>
+            )
         }
         return (
             <Container>
@@ -82,7 +115,7 @@ class CreatePhoto extends Component {
                         <CardItem>
                             <View style={styles.container}>
                                 <TextInput placeholder="Write something..." multiline={true} style={styles.input}
-                                    onChangeText={val => this.setState({caption: val})} />
+                                    onChangeText={val => this.setState({ caption: val })} />
                                 <Image source={{ uri: this.photoObj.uri }}
                                     style={styles.image} />
                             </View>

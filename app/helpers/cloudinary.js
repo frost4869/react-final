@@ -14,12 +14,8 @@ uploadImage = (uri_base64) => {
                 // File uploaded successfully
                 let response = JSON.parse(xhr.responseText);
                 console.log(response)
-                let image_url = response.secure_url;
+                let image_url = response.public_id;
                 resolve(image_url);
-            } else {
-                resolve({
-                    error: JSON.parse(xhr.responseText)
-                })
             }
         };
 

@@ -21,12 +21,16 @@ export function fetchImages() {
             .on("value", snapshot => {
                 snapshot.forEach((image) => {
                     let value = image.val();
+                    const imageQuality = 'q_auto:good'
+                    const imagePreUrl = `http://res.cloudinary.com/debwqzo2g/image/upload/${imageQuality}/`;
+                    const imageFormat = '.jpg';
+                    const fullImagePath = imagePreUrl + value.imageUrl + imageFormat;
                     images.push({
                         id: image.key,
                         description: value.description,
                         time: value.time,
                         timestamp: value.timestamp,
-                        imageUrl: value.imageUrl,
+                        imageUrl: fullImagePath,
                         userId: value.userId,
                         type: 'image'
                     })
