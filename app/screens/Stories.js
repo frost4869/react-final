@@ -8,11 +8,13 @@ import {
   FlatList,
   Image,
   ImageBackground,
-  TouchableOpacity
+  TouchableOpacity,
+  RefreshControl
 } from "react-native";
 import { Icon, Button } from "react-native-elements";
 import StoryCard from "../components/story_card";
-import firebase from "../helpers/firebase";
+var moment = require("moment");
+import { fetchStories } from "../helpers/fetch-data";
 
 // create a component
 class Stories extends Component {
@@ -23,7 +25,8 @@ class Stories extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stories: []
+      stories: [],
+      refreshing: false
     };
     this.loadStories = this.loadStories.bind(this);
     this.createNewStory = this.createNewStory.bind(this);
@@ -48,6 +51,14 @@ class Stories extends Component {
           ItemSeparatorComponent={this.renderSeparator}
           showsVerticalScrollIndicator={false}
           style={{ margin: 16 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={() => {
+                this.setState({ refreshing: true }, this.loadStories);
+              }}
+            />
+          }
         />
         <TouchableOpacity
           activeOpacity={1}
@@ -67,28 +78,22 @@ class Stories extends Component {
   };
 
   loadStories = () => {
-    // const user = global.user;
-    // const partner = global.partner;
-    // global.firebase
-    //   .database()
-    //   .ref("stories")
-    //   .orderByChild("time")
-    //   .on("value", snapshot => {
-    //     var stories = [];
-    //     snapshot.forEach(item => {
-    //       stories.push({
-    //         id: item.val(),
-    //         userId: item.val().userId,
-    //         username:
-    //           item.val().userId === user.id ? user.username : partner.username,
-    //         avatar:
-    //           item.val().userId === user.id ? user.avatar : partner.avatar,
-    //         time: item.val().time,
-    //         message: item.val().message
-    //       });
-    //     });
-    //     this.setState({ stories });
-    //   });
+    fetchStories().then(data => {
+      const user = global.user;
+      const partner = global.partner;
+      const stories = data.map(item => {
+        const itsMe = user.id == item.userId;
+        return {
+          ...item,
+          avatar: itsMe ? user.avatar : partner.avatar,
+          username: itsMe ? user.username : partner.username,
+          timeString: moment(item.timestamp).format("MMM, DD [at] hh:ss a"),
+          backgroundColor: itsMe ? "#FFFFFF" : "#F06292",
+          textColor: itsMe ? "#000000" : "#FFFFFF"
+        };
+      });
+      this.setState({ stories: stories, refreshing: false });
+    });
   };
 
   createNewStory = () => {

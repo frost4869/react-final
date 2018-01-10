@@ -6,6 +6,7 @@ import { Expo, Font, AppLoading } from 'expo'
 import { RkTheme } from "react-native-ui-kitten";
 import { AvatarTypes } from "./app/components/avatar/types";
 import Toast, { DURATION } from "react-native-easy-toast";
+import "./app/helpers/global";
 
 RkTheme.registerComponent('Avatar', AvatarTypes);
 

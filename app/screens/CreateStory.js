@@ -10,6 +10,7 @@ import {
 import { NavigationActions } from "react-navigation";
 import ProgressDialog from "../components/ProgressDialog";
 import { Icon } from "react-native-elements";
+import { createStory } from "../helpers/fetch-data";
 let handleSave = null;
 
 class CreateStory extends Component {
@@ -82,23 +83,20 @@ class CreateStory extends Component {
         userId: global.user.id,
         username: global.user.username,
         message: this.state.text,
-        time: Date.now()
+        timestamp: Date.now()
       };
       this.setState({ loading: true }, () => {
-        global.firebase
-          .database()
-          .ref("stories/" + id)
-          .set(story, error => {
-            this.setState({ loading: false }, () => {
-              if (error === null) {
-                const backAction = NavigationActions.back();
-                this.props.navigation.dispatch(backAction);
-                this.props.navigation.state.params.onSaved();
-              } else {
-                alert("Failed to create story!");
-              }
-            });
+        createStory(story, id).then(success => {
+          this.setState({ loading: false }, () => {
+            if (success) {
+              const backAction = NavigationActions.back();
+              this.props.navigation.dispatch(backAction);
+              this.props.navigation.state.params.onSaved();
+            } else {
+              alert("Failed to create story!");
+            }
           });
+        });
       });
     } else {
       alert("Please enter a message");
@@ -112,7 +110,6 @@ class CreateStory extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
     flex: 1
   },
   background: {

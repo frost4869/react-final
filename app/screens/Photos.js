@@ -31,7 +31,7 @@ class Photos extends Component {
             loading: true
         })
         fetchImages().then(data => {
-            console.log(data)
+            // console.log(data)
             this.setState({
                 images: data,
                 loading: false,
