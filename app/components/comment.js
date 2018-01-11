@@ -13,7 +13,7 @@ class Comment extends Component {
                 <Avatar rkType='circle' style={styles.avatar} img={require('../assets/male.png')} />
                 <View style={styles.content}>
                     <View style={styles.contentHeader}>
-                        <Text style={{ fontWeight: 'bold' }}>Some Name</Text>
+                        <Text style={{ fontWeight: 'bold' }}>Anthony</Text>
                         <Text>
                             {Moment().add(cmt.item.time, 'seconds').format('LT')}
                         </Text>
