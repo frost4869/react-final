@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ImageBackground, Platform, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Platform, AsyncStorage, ActivityIndicator } from 'react-native';
 import { Avatar } from "../components/avatar";
 import { Container, Content, Grid, Row, Col, Icon, H2, H3, H1, Body } from "native-base";
 import { RkStyleSheet } from "react-native-ui-kitten";
@@ -10,7 +10,7 @@ import Cover from "../assets/cover.jpg";
 import { LinearGradient } from "expo";
 import Moment from "moment";
 import TimeLine from "../components/time-line";
-import { fetchCoupleInfo } from "../helpers/fetch-data";
+import { fetchCoupleInfo, fetchImages, fetchStories } from "../helpers/fetch-data";
 
 // create a component
 class Home extends Component {
@@ -20,52 +20,57 @@ class Home extends Component {
 
         this.data = [
             {
-                time: Moment().year(),
+                // time: Moment().year(),
                 timestamp: Moment().valueOf(),
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.',
                 type: 'image',
                 imageUrl: 'https://cdn-media-1.lifehack.org/wp-content/files/2015/07/Couples-Read-Together-Stay-Together.jpg',
                 username: 'Anthony',
-                icon: (<Icon name='heart' />)
+                icon: (require('../assets/icons/heart.png'))
             },
             {
-                time: Moment().year(),
+                // time: Moment().year(),
                 timestamp: Moment().valueOf(),
                 title: 'Just some story',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
                 type: 'story',
-                username: 'Monica'
+                username: 'Monica',
+                icon: (require('../assets/icons/heart.png'))
             },
             {
-                time: Moment().year(),
+                // time: Moment().year(),
                 timestamp: Moment().valueOf(),
                 title: 'Story of our final project',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
                 type: 'story',
-                username: 'Monica'
+                username: 'Monica',
+                icon: (require('../assets/icons/heart.png'))
             },
             {
-                time: Moment().year(),
+                // time: Moment().year(),
                 timestamp: Moment().valueOf(),
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                 type: 'image',
                 imageUrl: 'https://i.pinimg.com/736x/fd/63/f9/fd63f9f0b416430cc6d587b51052bd6f--love-photos-couple-couples-love.jpg',
-                username: 'Anthony'
+                username: 'Anthony',
+                icon: (require('../assets/icons/heart.png'))
             },
             {
-                time: Moment().year(),
+                // time: Moment().year(),
                 timestamp: Moment().valueOf(),
                 title: 'First dinner together !',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
                 imageUrl: 'https://www.bolde.com/wp-content/uploads/2017/03/iStock-504535670.jpg',
-                type: 'event'
+                type: 'event',
+                icon: (require('../assets/icons/heart.png'))
             },
             {
-                time: Moment().year(),
+                // time: Moment().year(),
                 timestamp: Moment().valueOf(),
                 title: "2 years !!",
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
-                type: 'event'
+                type: 'event',
+                icon: (require('../assets/icons/heart.png'))
             }
         ]
         this.state = {
@@ -80,19 +85,51 @@ class Home extends Component {
         this.loadmore = this.loadmore.bind(this);
     }
 
-    componentWillMount() {
-        fetchCoupleInfo().then((start_date) => {
-            start_date = Moment(start_date);
-            let now = Moment();
+    async componentDidMount() {
 
-            this.setState({ days: now.diff(start_date, 'days') });
+        let start_date = await AsyncStorage.getItem("start_date");
+        start_date = Moment(parseInt(start_date));
+        let now = Moment();
+        this.setState({ days: now.diff(start_date, 'days') });
+
+        let posts = []
+
+        fetchImages().then((images) => {
+            posts = posts.concat(images)
+            fetchStories().then((stories) => {
+                posts = posts.concat(stories)
+
+                posts.sort((a, b) => {
+                    if (a.timestamp > b.timestamp)
+                        return 1;
+                    if (a.timestamp < b.timestamp)
+                        return -1
+
+                    return 0;
+                })
+
+                this.setState({
+                    data: posts,
+                    loading: false
+                })
+            })
         })
 
+        // fetchStories().then((stories) => {
+        //     posts = posts.concat(stories)
+        // })
 
-        this.setState({
-            data: this.data,
-            loading: false
-        })
+        // posts.sort((a, b) => {
+        //     if (a.timestamp > b.timestamp)
+        //         return 1;
+        //     if (a.timestamp < b.timestamp)
+        //         return -1
+
+        //     return 0;
+        // })
+
+
+
     }
 
     refresh() {
@@ -117,6 +154,17 @@ class Home extends Component {
     }
 
     render() {
+        let content;
+        if (this.state.loading) {
+            content = <ActivityIndicator color='#ec407a' size={40} />
+        } else {
+            content = <TimeLine data={this.state.data}
+                loadmore={this.loadmore}
+                refresh={this.refresh}
+                isRefreshing={this.state.isRefreshing}
+                navigate={this.props.navigation.navigate} />
+        }
+
         return (
             <Container style={styles.container}>
                 <Content>
@@ -153,12 +201,7 @@ class Home extends Component {
                         <Text style={styles.description}>Our sweet memories</Text>
                     </Body>
 
-                    <TimeLine data={this.state.data}
-                        loadmore={this.loadmore}
-                        refresh={this.refresh}
-                        isRefreshing={this.state.isRefreshing}
-                        loading={this.state.loading}
-                        navigate={this.props.navigation.navigate} />
+                    {content}
 
                 </Content>
             </Container>

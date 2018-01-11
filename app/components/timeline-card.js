@@ -48,7 +48,7 @@ class TimeLineCard extends Component {
                     <CardItem>
                         <Body style={{ alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={styles.title}>{this.props.data.title}</Text>
-                            <Text note>{Moment(this.props.data.timestamp).format('MMM, DD [at] hh:ss a')}</Text>
+                            <Text note>{Moment(this.props.data.timestamp).format('MMM DD, YYYY [at] hh:ss a')}</Text>
                         </Body>
                     </CardItem >
                 )
@@ -56,10 +56,10 @@ class TimeLineCard extends Component {
                 return (
                     <CardItem>
                         <Left>
-                            <Thumbnail source={require('../assets/male.png')} />
+                            <Thumbnail source={this.props.data.avatar} />
                             <Body>
-                                <Text style={styles.title}>Username</Text>
-                                <Text note>{Moment(this.props.data.timestamp).format('MMM, DD [at] hh:ss a')}</Text>
+                                <Text style={styles.title}>{this.props.data.username}</Text>
+                                <Text note>{Moment(this.props.data.timestamp).format('MMM DD, YYYY [at] hh:ss a')}</Text>
                             </Body>
                         </Left>
                     </CardItem>
@@ -75,7 +75,7 @@ class TimeLineCard extends Component {
                         <Text style={styles.caption} >{this.props.data.title}</Text>
                         <ReadMore
                             numberOfLines={4}>
-                            <Text>{this.props.data.description}</Text>
+                            <Text>{this.props.data.message}</Text>
                         </ReadMore>
                     </View>
                 )
@@ -202,7 +202,7 @@ export class ImagesGrid extends Component {
                     key={item.imageUrl}
                     onPress={() => this.viewImage(item)}
                     activeOpacity={0.8}>
-                    <Image source={{ uri: item.imageUrl }} style={{ width: '100%', height: 150, borderRadius: 5, }} 
+                    <Image source={{ uri: item.thumbnail }} style={{ width: '100%', height: 150, borderRadius: 5, }} 
                         indicator={ProgressCircle}/>
                 </TouchableOpacity>
             </View>

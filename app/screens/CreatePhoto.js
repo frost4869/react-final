@@ -68,7 +68,6 @@ class CreatePhoto extends Component {
         })
 
         Uploader(this.photoObj.base64).then(imageUrl => {
-            console.log(imageUrl)
             let id = Moment().valueOf();
             let photo = {
                 description: this.state.caption,

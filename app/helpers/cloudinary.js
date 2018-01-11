@@ -13,7 +13,6 @@ uploadImage = (uri_base64) => {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 // File uploaded successfully
                 let response = JSON.parse(xhr.responseText);
-                console.log(response)
                 let image_url = response.public_id;
                 resolve(image_url);
             }
