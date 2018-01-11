@@ -10,6 +10,7 @@ import {
   fetchUser02Info,
   fetchCoupleInfo
 } from "./app/helpers/fetch-data";
+import "./app/helpers/global";
 
 RkTheme.registerComponent('Avatar', AvatarTypes);
 

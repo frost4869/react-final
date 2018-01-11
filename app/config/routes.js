@@ -43,7 +43,8 @@ export const FooterTab = TabNavigator(
     Events: {
       screen: Events,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name="calendar" />
+        tabBarIcon: ({ tintColor }) => <Icon name="calendar" />,
+        header: null
       }
     }
   },

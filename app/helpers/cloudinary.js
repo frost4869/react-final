@@ -1,7 +1,7 @@
 uploadImage = (uri_base64) => {
     return new Promise((resolve, reject) => {
-        let keys = require('../assets/CLOUDINARY_KEY.json')
-        let url = `https://api.cloudinary.com/v1_1/${keys.cloud_name}/image/upload`;
+        // let keys = require('../assets/CLOUDINARY_KEY.json')
+        let url = `https://api.cloudinary.com/v1_1/debwqzo2g/image/upload`;
         let unsignedUploadPreset = 'vzrhkurc';
 
         let xhr = new XMLHttpRequest();

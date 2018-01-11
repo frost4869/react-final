@@ -31,18 +31,18 @@ export function fetchUser02Info() {
 }
 
 export function fetchCoupleInfo() {
-    return new Promise((resolve, reject) => {
-        FireBase.database()
-            .ref("couple_info")
-            .on("value", snapshot => {
-                resolve(snapshot.val().start_date)
-            })
-    })
+  return new Promise((resolve, reject) => {
+    FireBase.database()
+      .ref("couple_info")
+      .on("value", snapshot => {
+        resolve(snapshot.val().start_date);
+      });
+  });
 }
 
 export function fetchImages() {
-    return new Promise((resolve, reject) => {
-        let images = []
+  return new Promise((resolve, reject) => {
+    let images = [];
 
         FireBase.database()
             .ref("images")
@@ -56,12 +56,12 @@ export function fetchImages() {
 
                     let username = '';
                     let avatar = '';
-                    if (value.userId == 'user001') {
-                        username = 'Anthony';
-                        avatar = require('../assets/male.png')
+                    if (value.userId == global.user.id) {
+                        username = global.user.username;
+                        avatar = global.user.avatar
                     }else{
-                        username = 'Monica';
-                        avatar = require('../assets/female.jpg')
+                        username = global.partner.username;
+                        avatar = global.partner.avatar
                     }
 
                     images.push({
@@ -94,12 +94,12 @@ export function fetchStories() {
                 snapshot.forEach(item => {
                     let username = '';
                     let avatar = '';
-                    if (item.val().userId == 'user001') {
-                        username = 'Anthony';
-                        avatar = require('../assets/male.png')
+                    if (item.val().userId == global.user.id) {
+                        username = global.user.username;
+                        avatar = global.user.avatar;
                     }else{
-                        username = 'Monica';
-                        avatar = require('../assets/female.jpg')
+                        username = global.partner.username;
+                        avatar = global.partner.avatar;
                     }
                     stories.push({
                         id: item.val(),
@@ -140,3 +140,19 @@ export function fetchEvents() {
             });
     })
 }
+
+export function createStory(story,id) {
+     console.log("CREATING...");
+   return new Promise((resolve, reject) => {
+     FireBase.database()
+       .ref("stories/" +  id)
+       .set(story, error => {
+           console.log("CREATE DONE");
+         if (error == null) {
+           resolve(true);
+         } else {
+           resolve(false);
+         }
+       });
+   });
+  }

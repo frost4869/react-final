@@ -112,63 +112,11 @@ class Events extends Component {
   render() {
     let { events } = this.state
     return (
-      <ImageBackground
-        style={styles.background}
-        source={require("../assets/event_bg.jpeg")}
-      >
-        {/* dialog create event */}
-        <PopupDialog style={styles.popupCreateDialog}
-          dialogTitle={<DialogTitle title="New Event" />}
-          ref={(popupDialog) => { this.popupDialog = popupDialog; }}
-          dialogAnimation={slideAnimation}
-          actions={[
-            <DialogButton
-              text="Create"
-              onPress={this.addNewEvent}
-              key="button-1"
-            />,
-          ]}
-        >
-          <View>
-            <Form ref='form'
-              type={CreateEvent}
-              value={this.state.value}
-              options={this.state.options}
-            />
-          </View>
-        </PopupDialog>
-
-        <FlatList
-          data={events}
-          keyExtractor={(item, index) => index}
-          renderItem={item => <EventCard item={item.item} />}
-          ItemSeparatorComponent={this.renderSeparator}
-          showsVerticalScrollIndicator={false}
-          style={{ margin: 16 }}
-        />
-
-        <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-          {/* Rest of the app comes ABOVE the action button component !*/}
-          <ActionButton buttonColor="rgba(231,76,60,1)">
-            <ActionButton.Item buttonColor='#9b59b6' title="Take Photo" onPress={this.takePhotoTapped}>
-              <Icon name="md-camera" style={styles.actionButtonIcon} />
-            </ActionButton.Item>
-            <ActionButton.Item buttonColor='#3498db' title="Choose from library" onPress={this.selectPhotoTapped}>
-              <Icon name="md-images" style={styles.actionButtonIcon} />
-            </ActionButton.Item>
-            <ActionButton.Item buttonColor='#1abc9c' title="Create new event" onPress={this.createNewEventTapped}>
-              <Icon name="md-done-all" style={styles.actionButtonIcon} />
-            </ActionButton.Item>
-          </ActionButton>
-        </View>
-      </ImageBackground>
-
+      <View style={styles.container}>
+        <Text>Under Development</Text>
+      </View>
     );
   }
-
-
-
-
 }
 
 
@@ -193,7 +141,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    backgroundColor: '#fff',
+    marginTop: Platform.OS === "ios" ? 0 : Expo.Constants.statusBarHeight
   },
   actionButtonIcon: {
     fontSize: 20,

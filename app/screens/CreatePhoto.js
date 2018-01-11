@@ -74,7 +74,7 @@ class CreatePhoto extends Component {
                 imageUrl: imageUrl,
                 time: Moment().year(),
                 timestamp: Moment().valueOf(),
-                userId: 'user001'
+                userId: global.user.id,
             }
 
             FireBase

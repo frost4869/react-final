@@ -2,30 +2,30 @@
 import React, { Component } from "react";
 import { Card, CardItem } from "native-base";
 import { View, Text, StyleSheet, Image } from "react-native";
-var moment = require("moment");
+import ReadMore from "react-native-read-more-text";
 
 // create a component
 class StoryCard extends Component {
   render() {
     const { item } = this.props;
-    const timeString = moment(item.time).format("HH:mm - DD/MM/YYYY");
-    // fake current user
-    const userId = global.user.id;
+
     const backgroundStyle = {
-      backgroundColor: userId == item.userId ? "#F1F8E9" : "#F06292"
+      backgroundColor: item.backgroundColor
     };
-    const textStyle = { color: userId == item.userId ? "#000000" : "#FFFFFF" };
+    const textStyle = { color: item.textColor };
 
     return (
       <Card style={[styles.item, backgroundStyle]}>
         <View style={styles.itemHeader}>
-          <Image style={styles.avatar} source={{ uri: item.avatar }} />
+          <Image style={styles.avatar} source={item.avatar} />
           <View style={{ marginLeft: 8 }}>
             <Text style={[styles.username, textStyle]}>{item.username}</Text>
-            <Text style={[styles.time, textStyle]}>{timeString}</Text>
+            <Text style={[styles.time, textStyle]}>{item.timeString}</Text>
           </View>
         </View>
-        <Text style={[styles.message, textStyle]}>{item.message}</Text>
+        <ReadMore numberOfLines={4}>
+          <Text style={[styles.message, textStyle]}>{item.message}</Text>
+        </ReadMore>
       </Card>
     );
   }

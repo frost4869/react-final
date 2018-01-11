@@ -18,45 +18,8 @@ class Home extends Component {
     constructor(props) {
         super(props)
 
-        this.data = [
+        this.events = [
             {
-                // time: Moment().year(),
-                timestamp: Moment().valueOf(),
-                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.',
-                type: 'image',
-                imageUrl: 'https://cdn-media-1.lifehack.org/wp-content/files/2015/07/Couples-Read-Together-Stay-Together.jpg',
-                username: 'Anthony',
-                icon: (require('../assets/icons/heart.png'))
-            },
-            {
-                // time: Moment().year(),
-                timestamp: Moment().valueOf(),
-                title: 'Just some story',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-                type: 'story',
-                username: 'Monica',
-                icon: (require('../assets/icons/heart.png'))
-            },
-            {
-                // time: Moment().year(),
-                timestamp: Moment().valueOf(),
-                title: 'Story of our final project',
-                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-                type: 'story',
-                username: 'Monica',
-                icon: (require('../assets/icons/heart.png'))
-            },
-            {
-                // time: Moment().year(),
-                timestamp: Moment().valueOf(),
-                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                type: 'image',
-                imageUrl: 'https://i.pinimg.com/736x/fd/63/f9/fd63f9f0b416430cc6d587b51052bd6f--love-photos-couple-couples-love.jpg',
-                username: 'Anthony',
-                icon: (require('../assets/icons/heart.png'))
-            },
-            {
-                // time: Moment().year(),
                 timestamp: Moment().valueOf(),
                 title: 'First dinner together !',
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
@@ -65,7 +28,6 @@ class Home extends Component {
                 icon: (require('../assets/icons/heart.png'))
             },
             {
-                // time: Moment().year(),
                 timestamp: Moment().valueOf(),
                 title: "2 years !!",
                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing.',
@@ -81,8 +43,7 @@ class Home extends Component {
             days: 0,
         }
 
-        this.refresh = this.refresh.bind(this);
-        this.loadmore = this.loadmore.bind(this);
+        this.fetchData = this.fetchData.bind(this);
     }
 
     async componentDidMount() {
@@ -92,21 +53,16 @@ class Home extends Component {
         let now = Moment();
         this.setState({ days: now.diff(start_date, 'days') });
 
-        let posts = []
+        this.fetchData();
+    }
 
+    fetchData() {
+        let posts = []
         fetchImages().then((images) => {
             posts = posts.concat(images)
             fetchStories().then((stories) => {
                 posts = posts.concat(stories)
-
-                posts.sort((a, b) => {
-                    if (a.timestamp > b.timestamp)
-                        return 1;
-                    if (a.timestamp < b.timestamp)
-                        return -1
-
-                    return 0;
-                })
+                posts = posts.concat(this.events)
 
                 this.setState({
                     data: posts,
@@ -114,22 +70,6 @@ class Home extends Component {
                 })
             })
         })
-
-        // fetchStories().then((stories) => {
-        //     posts = posts.concat(stories)
-        // })
-
-        // posts.sort((a, b) => {
-        //     if (a.timestamp > b.timestamp)
-        //         return 1;
-        //     if (a.timestamp < b.timestamp)
-        //         return -1
-
-        //     return 0;
-        // })
-
-
-
     }
 
     refresh() {
