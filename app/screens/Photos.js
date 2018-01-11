@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, Platform, ActivityIndicator, ListView, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Platform, ActivityIndicator, ListView, ScrollView, RefreshControl, AsyncStorage } from 'react-native';
 import { fetchImages } from "../helpers/fetch-data";
 import Card from "../components/timeline-card";
 import { ImagesGrid } from "../components/timeline-card";
@@ -31,7 +31,6 @@ class Photos extends Component {
             loading: true
         })
         fetchImages().then(data => {
-            // console.log(data)
             this.setState({
                 images: data,
                 loading: false,

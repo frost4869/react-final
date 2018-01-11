@@ -17,7 +17,7 @@ class StoryCard extends Component {
     return (
       <Card style={[styles.item, backgroundStyle]}>
         <View style={styles.itemHeader}>
-          <Image style={styles.avatar} source={{ uri: item.avatar }} />
+          <Image style={styles.avatar} source={item.avatar} />
           <View style={{ marginLeft: 8 }}>
             <Text style={[styles.username, textStyle]}>{item.username}</Text>
             <Text style={[styles.time, textStyle]}>{item.timeString}</Text>

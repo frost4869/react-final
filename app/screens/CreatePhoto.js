@@ -68,14 +68,13 @@ class CreatePhoto extends Component {
         })
 
         Uploader(this.photoObj.base64).then(imageUrl => {
-            console.log(imageUrl)
             let id = Moment().valueOf();
             let photo = {
                 description: this.state.caption,
                 imageUrl: imageUrl,
                 time: Moment().year(),
                 timestamp: Moment().valueOf(),
-                userId: 'user001'
+                userId: global.user.id,
             }
 
             FireBase

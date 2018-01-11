@@ -48,33 +48,23 @@ class TimeLineCard extends Component {
 
   CardHeader(props) {
     switch (this.props.data.type) {
-      case "event":
+      case 'event':
         return (
           <CardItem>
-            <Body style={{ alignItems: "center", justifyContent: "center" }}>
+            <Body style={{ alignItems: 'center', justifyContent: 'center' }}>
               <Text style={styles.title}>{this.props.data.title}</Text>
-              <Text note>
-                {Moment(this.props.data.timestamp).format(
-                  "MMM, DD [at] hh:ss a"
-                )}
-              </Text>
+              <Text note>{Moment(this.props.data.timestamp).format('MMM DD, YYYY [at] hh:ss a')}</Text>
             </Body>
-          </CardItem>
-        );
+          </CardItem >
+        )
       default:
-        const itsMe = this.props.data.userId == global.user.id;
-        const avatar = itsMe ? global.user.avatar : global.partner.avatar;
-        const username = itsMe ? global.user.username : global.partner.username;
-        const timeString = Moment(this.props.data.timestamp).format(
-          "MMM, DD [at] hh:ss a"
-        );
         return (
           <CardItem>
             <Left>
-              <Thumbnail source={{ uri: avatar }} />
+              <Thumbnail source={this.props.data.avatar} />
               <Body>
-                <Text style={styles.title}>{username}</Text>
-                <Text note>{timeString}</Text>
+                <Text style={styles.title}>{this.props.data.username}</Text>
+                <Text note>{Moment(this.props.data.timestamp).format('MMM DD, YYYY [at] hh:ss a')}</Text>
               </Body>
             </Left>
           </CardItem>
@@ -84,40 +74,43 @@ class TimeLineCard extends Component {
 
   CardDetails(props) {
     switch (this.props.data.type) {
-      case "image":
+      case 'story':
         return (
           <View style={styles.container}>
-            <ReadMore numberOfLines={4}>
+            <Text style={styles.caption} >{this.props.data.title}</Text>
+            <ReadMore
+              numberOfLines={4}>
+              <Text>{this.props.data.message}</Text>
+            </ReadMore>
+          </View>
+        )
+      case 'image':
+        return (
+          <View style={styles.container}>
+            <ReadMore
+              numberOfLines={4}>
               <Text>{this.props.data.description}</Text>
             </ReadMore>
             <TouchableOpacity
               key={this.props.data.imageUrl}
               onPress={this.viewImage}
-              activeOpacity={0.8}
-            >
-              <Image
-                source={{ uri: this.props.data.imageUrl }}
-                style={styles.image}
-                resizeMode="cover"
-              />
+              activeOpacity={0.8}>
+              <Image source={{ uri: this.props.data.imageUrl }} style={styles.image}
+                resizeMode='cover' />
             </TouchableOpacity>
           </View>
-        );
-      default:
-        //events
+
+        )
+      default: //events
         return (
           <View style={styles.container}>
             <Text style={styles.caption}>{this.props.data.description}</Text>
             <TouchableOpacity
               key={this.props.data.imageUrl}
               onPress={this.viewImage}
-              activeOpacity={0.8}
-            >
-              <Image
-                source={{ uri: this.props.data.imageUrl }}
-                style={styles.image}
-                resizeMode="cover"
-              />
+              activeOpacity={0.8}>
+              <Image source={{ uri: this.props.data.imageUrl }} style={styles.image}
+                resizeMode='cover' />
             </TouchableOpacity>
           </View>
         );
@@ -127,11 +120,11 @@ class TimeLineCard extends Component {
   cardComment() {
     if (this.props.withComment) {
       return (
-        <Button transparent>
+        <Button transparent >
           <Icon active name="chatbubbles" style={styles.icon} />
           <Text onPress={this.viewDetails}>Comments</Text>
         </Button>
-      );
+      )
     }
   }
 
@@ -141,6 +134,8 @@ class TimeLineCard extends Component {
     });
     this.props.navigate("Details", this.props.data);
   }
+
+
 
   render() {
     return (
@@ -167,13 +162,14 @@ class TimeLineCard extends Component {
 }
 
 export class ImagesGrid extends Component {
+
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       isVisible: false,
-      currentImage: ""
-    };
+      currentImage: '',
+    }
 
     this.renderItem = this.renderItem.bind(this);
     this.viewImage = this.viewImage.bind(this);
@@ -185,13 +181,13 @@ export class ImagesGrid extends Component {
     this.showImageView();
     this.setState({
       currentImage: image
-    });
+    })
   }
 
   showImageView() {
     this.setState({
-      isVisible: !this.state.isVisible
-    });
+      isVisible: !this.state.isVisible,
+    })
   }
 
   viewDetails() {
@@ -207,16 +203,12 @@ export class ImagesGrid extends Component {
         <TouchableOpacity
           key={item.imageUrl}
           onPress={() => this.viewImage(item)}
-          activeOpacity={0.8}
-        >
-          <Image
-            source={{ uri: item.imageUrl }}
-            style={{ width: "100%", height: 150, borderRadius: 5 }}
-            indicator={ProgressCircle}
-          />
+          activeOpacity={0.8}>
+          <Image source={{ uri: item.thumbnail }} style={{ width: '100%', height: 150, borderRadius: 5, }}
+            indicator={ProgressCircle} />
         </TouchableOpacity>
       </View>
-    );
+    )
   }
 
   render() {
@@ -226,18 +218,16 @@ export class ImagesGrid extends Component {
           items={this.props.data}
           renderItem={item => this.renderItem(item)}
           itemDimension={130}
-          withComment
-        />
+          withComment />
 
         <ImageView
           data={this.state.currentImage}
           isVisible={this.state.isVisible}
           viewImage={this.showImageView}
           viewDetails={this.viewDetails}
-          withComment
-        />
+          withComment />
       </View>
-    );
+    )
   }
 }
 
