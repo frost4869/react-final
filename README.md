@@ -12,4 +12,4 @@
 - [ ] Events screen: user can view all of the created events.
 
 ## Demo
-https://drive.google.com/file/d/1UbrbiYg4JhiA3A0KcLJUgNa2jVyiAClk/view?usp=sharing
+[Link](https://www.youtube.com/watch?v=iXJbwHsoUZw)
